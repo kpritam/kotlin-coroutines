@@ -1,18 +1,21 @@
 package scripts
 
 import kotlinx.coroutines.*
+import java.util.concurrent.Executors
 
-fun main() = runBlocking {
-    val strandEc = StrandEc()
-    val script = Script(strandEc)
+fun main() = runBlocking<Unit> {
 
-    runScript(script, strandEc)
+    val ec: ExecutorCoroutineDispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
+    val script = Script(ec)
 
-    strandEc.close()
+    runScript(script, ec)
+
+    ec.close()
+
 }
 
-suspend fun runScript(script: Script, strandEc: StrandEc) = coroutineScope {
-    withContext(strandEc) {
+suspend fun runScript(script: Script, ec: CoroutineDispatcher) = coroutineScope {
+    withContext(ec) {
         script.execute(0).forEach(::println)
         delay(1000)
         script.executeCmdsHandled()

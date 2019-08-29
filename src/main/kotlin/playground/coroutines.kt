@@ -1,7 +1,7 @@
 package playground
 
 import kotlinx.coroutines.*
-import scripts.StrandEc
+import java.util.concurrent.Executors
 
 fun main() {
     runBlocking {
@@ -15,7 +15,7 @@ fun main() {
 object Test1 {
     var counter = 0
 
-    private val singleThreaded = StrandEc()
+    private val singleThreaded = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
 
     private fun incrementAsync(): Deferred<Int> {
         return GlobalScope.async(context = singleThreaded) {

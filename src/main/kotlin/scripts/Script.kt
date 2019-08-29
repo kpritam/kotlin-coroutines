@@ -1,8 +1,10 @@
 package scripts
 
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.asExecutor
 import java.util.concurrent.CompletableFuture
 
-class Script(val strandEc: StrandEc) : ScriptDsl() {
+class Script(val dispatcher: CoroutineDispatcher) : ScriptDsl() {
     private var cmdsHandled = 0
 
     init {
@@ -47,7 +49,7 @@ class Script(val strandEc: StrandEc) : ScriptDsl() {
     private fun longComp(): CompletableFuture<Void> {
         val runnable = Runnable { Unit }
 
-        return CompletableFuture.runAsync(runnable, strandEc.executor)
+        return CompletableFuture.runAsync(runnable, dispatcher.asExecutor())
     }
 
 }
