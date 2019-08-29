@@ -31,6 +31,7 @@ class Script(val strandEc: StrandEc) : ScriptDsl() {
         (1..10000).forEach {
             handleSetup { cmd ->
                 cmdsHandled += 1
+
                 longComp().thenAccept {
                     cmdsHandled += 1
                 }

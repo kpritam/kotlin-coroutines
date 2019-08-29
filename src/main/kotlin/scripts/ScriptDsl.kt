@@ -1,5 +1,9 @@
 package scripts
 
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+
 open class ScriptDsl {
     private var setupHandler = FunctionHandlers<Int, Int>()
     private var _cmdsHandled = FunctionHandlers<Unit, Unit>()
@@ -11,4 +15,8 @@ open class ScriptDsl {
     suspend fun execute(value: Int): List<Int> = setupHandler.execute(value)
 
     suspend fun executeCmdsHandled(): List<Unit> = _cmdsHandled.execute(Unit)
+
+    suspend fun <T> par(block: () -> T): Deferred<T> = coroutineScope {
+        async { block() }
+    }
 }

@@ -1,36 +1,20 @@
 package scripts
 
 import kotlinx.coroutines.*
-import java.util.*
-import java.util.concurrent.CompletableFuture
 
-fun main() {
-
+fun main() = runBlocking {
     val strandEc = StrandEc()
     val script = Script(strandEc)
 
-
-    val test = GlobalScope.async(context = strandEc) {
-        val result = script.execute(0)
-        delay(1000)
-        script.executeCmdsHandled()
-        result
-    }
-
-    runBlocking { test.await().forEach { println(it) } }
+    runScript(script, strandEc)
 
     strandEc.close()
 }
 
-// simulating network call
-suspend fun getEvent(): String {
-    delay(1000)
-    return "Event Id: ${UUID.randomUUID()}"
+suspend fun runScript(script: Script, strandEc: StrandEc) = coroutineScope {
+    withContext(strandEc) {
+        script.execute(0).forEach(::println)
+        delay(1000)
+        script.executeCmdsHandled()
+    }
 }
-
-// java - kotlin interop ====================
-fun getFutureInt(): CompletableFuture<Int> = CompletableFuture.completedFuture(100)
-
-suspend fun getSuspendableInt(): Int = getFutureInt().await()
-//  ====================
-
