@@ -6,13 +6,18 @@ import java.util.concurrent.CompletableFuture
 
 fun main() {
 
+    val strandEc = StrandEc()
     val script = Script()
 
-    val test = GlobalScope.async {
-        script.execute(10)
+    val test = GlobalScope.async(context = strandEc) {
+        val result = script.execute(10)
+        script.executeCmdsHandled()
+        result
     }
 
     runBlocking { test.await().forEach { println(it) } }
+
+    strandEc.close()
 }
 
 // simulating network call
