@@ -2,7 +2,5 @@ target
 .bloop
 .metals
 .idea
-*.jar
 build
-gradle
 .gradle
