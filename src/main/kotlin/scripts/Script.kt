@@ -1,10 +1,11 @@
 package scripts
 
-class Script : ScriptDsl() {
-    var cmdsHandled = 0
+import java.util.concurrent.CompletableFuture
+
+class Script(val strandEc: StrandEc) : ScriptDsl() {
+    private var cmdsHandled = 0
 
     init {
-
         handleSetup { cmd ->
             val event = getEvent()
             val number = getSuspendableInt()
@@ -27,12 +28,25 @@ class Script : ScriptDsl() {
             cmd + 2
         }
 
-        cmdsHandled {
-            println(" cmdsHandled Called ")
-            println("Total cmds handled = $cmdsHandled")
+        (1..10000).forEach {
+            handleSetup { cmd ->
+                cmdsHandled += 1
+                longComp().thenAccept {
+                    cmdsHandled += 1
+                }
+                cmd + it
+            }
         }
 
+        cmdsHandled {
+            println("Total cmds handled = $cmdsHandled")
+        }
+    }
 
+    private fun longComp(): CompletableFuture<Void> {
+        val runnable = Runnable { Unit }
+
+        return CompletableFuture.runAsync(runnable, strandEc.executor)
     }
 
 }

@@ -7,10 +7,12 @@ import java.util.concurrent.CompletableFuture
 fun main() {
 
     val strandEc = StrandEc()
-    val script = Script()
+    val script = Script(strandEc)
+
 
     val test = GlobalScope.async(context = strandEc) {
-        val result = script.execute(10)
+        val result = script.execute(0)
+        delay(1000)
         script.executeCmdsHandled()
         result
     }
