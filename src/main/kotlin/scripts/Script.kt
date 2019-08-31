@@ -4,17 +4,19 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.asExecutor
 import java.util.concurrent.CompletableFuture
 
-class Script(val dispatcher: CoroutineDispatcher) : ScriptDsl() {
-    private var cmdsHandled = 0
+class Script(private val dispatcher: CoroutineDispatcher) : ScriptDsl() {
+    private var handledCount = 0
 
     init {
         handleSetup { cmd ->
+            log("handleSetup")
+
             val event = getEvent()
             val number = getSuspendableInt()
 
             println(number)
             println(event)
-            cmdsHandled += 1
+            handledCount += 1
 
             cmd + 1
         }
@@ -25,31 +27,24 @@ class Script(val dispatcher: CoroutineDispatcher) : ScriptDsl() {
 
             println(number)
             println(event)
-            cmdsHandled += 1
+            handledCount += 1
 
             cmd + 2
         }
 
         (1..10000).forEach {
             handleSetup { cmd ->
-                cmdsHandled += 1
+                handledCount += 1
 
-                longComp().thenAccept {
-                    cmdsHandled += 1
+                par {
+                    handledCount += 1
                 }
                 cmd + it
             }
         }
 
         cmdsHandled {
-            println("Total cmds handled = $cmdsHandled")
+            log("Total cmds handled = $handledCount")
         }
     }
-
-    private fun longComp(): CompletableFuture<Void> {
-        val runnable = Runnable { Unit }
-
-        return CompletableFuture.runAsync(runnable, dispatcher.asExecutor())
-    }
-
 }

@@ -1,8 +1,6 @@
 package scripts
 
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.*
 
 open class ScriptDsl {
     private var setupHandler = FunctionHandlers<Int, Int>()
@@ -17,6 +15,9 @@ open class ScriptDsl {
     suspend fun executeCmdsHandled(): List<Unit> = _cmdsHandled.execute(Unit)
 
     suspend fun <T> par(block: () -> T): Deferred<T> = coroutineScope {
-        async { block() }
+        async {
+            log("Par operation")
+            block()
+        }
     }
 }
