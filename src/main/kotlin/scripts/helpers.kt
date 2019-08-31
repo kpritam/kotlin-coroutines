@@ -1,6 +1,7 @@
 package scripts
 
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.future.await
 import java.util.*
 import java.util.concurrent.CompletableFuture
 

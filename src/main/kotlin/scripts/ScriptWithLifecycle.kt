@@ -19,7 +19,7 @@ class ScriptWithLifecycle : CoroutineScope {
     fun start() = launch {
         log("Launching ScriptWithLifecycle")
 
-        val script = Script(ec)
+        val script = Script()
         script.execute(0).forEach { log(it.toString()) }
         delay(1000)
         script.executeCmdsHandled()

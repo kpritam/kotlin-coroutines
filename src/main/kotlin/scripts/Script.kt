@@ -1,10 +1,6 @@
 package scripts
 
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.asExecutor
-import java.util.concurrent.CompletableFuture
-
-class Script(private val dispatcher: CoroutineDispatcher) : ScriptDsl() {
+class Script : ScriptDsl() {
     private var handledCount = 0
 
     init {
