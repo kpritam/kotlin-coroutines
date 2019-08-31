@@ -1,4 +1,4 @@
-package scripts
+package script.dsl
 
 class Script : ScriptDsl() {
     private var handledCount = 0

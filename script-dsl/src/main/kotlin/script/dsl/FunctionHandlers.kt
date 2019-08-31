@@ -1,4 +1,4 @@
-package scripts
+package script.dsl
 
 class FunctionHandlers<I, O> {
     private var _handlers = mutableListOf<suspend (I) -> O>()

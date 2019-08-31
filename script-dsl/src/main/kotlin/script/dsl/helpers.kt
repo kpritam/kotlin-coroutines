@@ -1,4 +1,4 @@
-package scripts
+package script.dsl
 
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.future.await

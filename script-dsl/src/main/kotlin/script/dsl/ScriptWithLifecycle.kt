@@ -1,4 +1,4 @@
-package scripts
+package script.dsl
 
 import kotlinx.coroutines.*
 import java.util.concurrent.Executors

@@ -1,4 +1,4 @@
-package playground
+package examples
 
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
