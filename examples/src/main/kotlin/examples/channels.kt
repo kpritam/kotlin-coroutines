@@ -1,35 +1,39 @@
 package examples
 
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
-import kotlin.system.measureTimeMillis
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.channels.produce
 
-suspend fun doSomethingUsefulOne(): Int {
-    delay(1000L) // pretend we are doing something useful here
-    return 13
+
+@ExperimentalCoroutinesApi
+fun CoroutineScope.producer(): ReceiveChannel<Int> = produce {
+    (1.until(10)).map {
+        send(it)
+        delay(100)
+    }
 }
 
-suspend fun doSomethingUsefulTwo(): Int {
-    delay(1000L) // pretend we are doing something useful here, too
-    return 29
-}
+suspend fun increment(counter: Channel<Int>) = counter.send(1)
 
-fun main() = runBlocking<Unit> {
+@ExperimentalCoroutinesApi
+fun main() = runBlocking {
+    var counter: Int = 0
+    val counterChannel = Channel<Int>()
 
-    val time = measureTimeMillis {
-        val one = doSomethingUsefulOne()
-        val two = doSomethingUsefulTwo()
-        println("The answer is ${one + two}")
+    launch {
+        for (c in counterChannel) {
+            counter += 1
+        }
     }
 
-    println("Completed in $time ms")
-
-    val time2 = measureTimeMillis {
-        val one = async { doSomethingUsefulOne() }
-        val two = async { doSomethingUsefulTwo() }
-        println("The answer is ${one.await() + two.await()}")
+    repeat(50) {
+        launch {
+            increment(counterChannel)
+            if (counter == 50) counterChannel.close()
+        }
     }
 
-    println("Completed in $time2 ms")
+    delay(5000)
+    println(counter)
 }
