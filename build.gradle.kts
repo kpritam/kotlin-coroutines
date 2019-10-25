@@ -18,9 +18,9 @@ subprojects {
     }
 
     dependencies {
-        implementation(kotlin("stdlib-jdk8"))
-        implementation("com.github.tmtsoftware.esw:esw-ocs-impl_2.13:c964c43911dfbf88d0ffff10f9507f859d6eec2e")
-        implementation("com.github.tmtsoftware.csw:csw-params_2.13:1c2c2c4baaed0e14ae6b2dc579787b8f4b38616c")
+        compile(kotlin("stdlib-jdk8"))
+        compile("com.github.tmtsoftware.esw:esw-ocs-impl_2.13:c964c43911dfbf88d0ffff10f9507f859d6eec2e")
+        compile("com.github.tmtsoftware.csw:csw-params_2.13:1c2c2c4baaed0e14ae6b2dc579787b8f4b38616c")
         compile("org.jetbrains.kotlinx", "kotlinx-coroutines-jdk8", "1.3.0")
         testCompile("junit", "junit", "4.12")
     }

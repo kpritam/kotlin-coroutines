@@ -2,5 +2,6 @@ rootProject.name = 'kotlin-coroutines'
 
 include(
         "script-dsl",
-        "examples"
+        "examples",
+        "blog"
 )
