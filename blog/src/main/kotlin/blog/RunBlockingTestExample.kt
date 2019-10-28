@@ -1,4 +1,4 @@
-package blog.scopes
+package blog
 
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking

@@ -1,4 +1,4 @@
-package blog.scopes
+package blog
 
 import io.kotlintest.shouldBe
 import kotlinx.coroutines.*

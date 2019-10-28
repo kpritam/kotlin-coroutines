@@ -1,4 +1,4 @@
-package blog.scopes
+package blog
 
 import kotlin.concurrent.thread
 
